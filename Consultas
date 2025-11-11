@@ -1,0 +1,15 @@
+--Vista de almacen
+select i.nombre as "Producto", i.cantidad_en_almacen as "Cantidad en almacen", a.costo as "Costo", i.unidad_de_medida as "Unidad de medida"
+from insumo i
+join almacen a on i.id_insumo = a.id_insumo
+
+--Vista de empleado
+select e.nombre as "Nombre", e.apellido_paterno as "Apellido Paterno", e.apellido_materno as "Apellido Materno", r.nombre_rol as "Cargo", e.fecha_de_contrato as "Fecha de contratacion"
+from empleado e
+join rol r on e.id_rol = r.id_rol
+
+--Vista del reporte de compras de insumos para la pizzeria
+select i.nombre as "Producto", p.nombre as "Proveedor", a.cantidad_comprada as "Cantidad comprada", a.costo as "Costo unitario", a.cantidad_comprada*a.costo as "Total"
+from almacen a
+join insumo i on a.id_insumo = i.id_insumo
+join proveedor p on a.id_proveedor = p.id_proveedor

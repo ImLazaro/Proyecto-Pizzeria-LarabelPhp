@@ -18,6 +18,8 @@ class Turno extends Model
         'id_caja',
         'fecha',
         'hora_de_entrada',
-        'hora_de_salida'
+        'hora_de_salida',
+        'fondo_inicial',
+        
     ];
 }

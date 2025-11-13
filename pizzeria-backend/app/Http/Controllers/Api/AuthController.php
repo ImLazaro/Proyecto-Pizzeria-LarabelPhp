@@ -1,36 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
-use function Laravel\Prompts\error;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
-{
-    try {
+    {
         $user = User::where('nombre', $request->nombre)->first();
-
-        if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+            'success' => false,
+            'message' => 'Credenciales invalidas',
+            ]);
         }
 
+        $token = $user->createToken('AccessToken')->accessToken;
+
         return response()->json([
-            'token' => $user->createToken('token-name')->plainTextToken,
+            'token' => $token,
+            'success' => true,
             'user' => $user
         ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => $e->getMessage(),
-            'line' => $e->getLine(),
-            'file' => $e->getFile(),
-        ], 500);
     }
-}
-
-
-
 }

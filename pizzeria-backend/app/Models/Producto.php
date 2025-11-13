@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Receta;
 class Producto extends Model
 {
     use HasFactory;
@@ -15,6 +15,11 @@ class Producto extends Model
 
     protected $fillable = [
         'nombre',
-        'id_receta'
+        'estado',
+        'precio',
+        'tipo'
     ];
+     public function receta() {
+        return $this->hasMany(Receta::class, 'id_pizza');
+    }
 }

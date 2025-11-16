@@ -16,6 +16,7 @@ class Insumo extends Model
     protected $fillable = [
         'nombre',
         'cantidad_en_almacen',
-        'unidad_de_medida'
+        'unidad_de_medida',
+        'costo',
     ];
 }

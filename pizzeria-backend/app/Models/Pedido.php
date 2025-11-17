@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DetallePedido;
 
 class Pedido extends Model
 {
@@ -14,6 +15,10 @@ class Pedido extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'estado', 'id_caja', 'total', 'pagado', 'entregado', 'fecha', 'turno'
+        'estado', 'id_caja', 'total', 'pagado', 'entregado', 'fecha', 'turno', 'id_producto', 'tipo_venta'
     ];
+    public function detalle()
+    {
+        return $this->hasMany(DetallePedido::class, 'id_pedido', 'id_pedido');
+    }
 }

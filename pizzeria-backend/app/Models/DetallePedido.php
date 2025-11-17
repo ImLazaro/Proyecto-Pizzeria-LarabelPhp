@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Producto;
 
 class DetallePedido extends Model
 {
@@ -14,6 +15,11 @@ class DetallePedido extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_proveedor', 'id_insumo', 'id_pedido', 'precio', 'producto', 'cantidad'
+     'id_producto', 'id_pedido', 'precio', 'cantidad'
     ];
+
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'id_producto', 'id_producto');
+    }
 }

@@ -11,7 +11,10 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $user = User::where('nombre', $request->nombre)->first();
+        $user = User::join('empleado', 'users.id_empleado', '=', 'empleado.id_empleado')
+    ->join('rol', 'empleado.id_rol', '=', 'rol.id_rol')
+    ->where('users.nombre', $request->nombre)
+    ->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
             'success' => false,
@@ -25,6 +28,16 @@ class AuthController extends Controller
             'token' => $token,
             'success' => true,
             'user' => $user
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sesion cerrada exitosamente',
         ]);
     }
 }

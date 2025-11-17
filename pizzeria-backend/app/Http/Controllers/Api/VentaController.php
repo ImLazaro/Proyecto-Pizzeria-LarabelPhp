@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use App\Models\Pedido;
 use App\Models\DetallePedido;
+use App\Models\Producto;
 class VentaController extends Controller
 {
     /**
@@ -106,4 +107,30 @@ class VentaController extends Controller
         ], 500);
     }
 }
+
+public function pedidosReporte(Request $request)
+{
+    $fechaInicial = $request->fechaInicial;
+    $fechaFinal = $request->fechaFinal;     
+
+   $query = DB::table('producto')
+    ->join('detalle_pedido as dp', 'producto.id_producto', '=', 'dp.id_producto')
+    ->join('pedido as ped', 'dp.id_pedido', '=', 'ped.id_pedido')
+    ->select(
+        'producto.id_producto',
+        'producto.nombre',
+        DB::raw('COUNT(dp.id_detalle) as veces_vendida'),
+        DB::raw('SUM(dp.cantidad) as cantidad'),
+        DB::raw('SUM(dp.cantidad * dp.precio) as venta_total')
+    )
+    ->whereBetween(DB::raw('DATE(ped.fecha)'), [$fechaInicial, $fechaFinal])
+    ->where('producto.tipo', 'Pizza')
+    ->groupBy('producto.id_producto', 'producto.nombre')
+    ->get();
+    return response()->json([
+        'success' => true,
+        'data' => $query
+    ]);
+}
+
 }

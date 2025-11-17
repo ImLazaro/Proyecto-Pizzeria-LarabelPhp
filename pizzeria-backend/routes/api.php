@@ -29,3 +29,4 @@ Route::post('buscar-user', [UserController::class,'buscarUsuario']);
 Route::post(uri: '/crear-venta', action: [VentaController::class, 'crearVenta']);
 Route::get(uri: '/obtener-pedidos', action: [VentaController::class, 'obtenerPedidos']);
 Route::post(uri: '/actualizar-estado-pedido/{id}', action: [VentaController::class, 'actualizarEstadoPedido']);
+Route::post('get-pizzas-reporte', [VentaController::class,'pedidosReporte']);

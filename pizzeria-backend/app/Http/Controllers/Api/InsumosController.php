@@ -13,6 +13,7 @@ class InsumosController extends Controller
     function getInsumos()
     {
         $insumos = DB::table('insumos')
+            ->orderBy('id_insumo', 'desc')
             ->get();
 
         return response()->json(['insumos' => $insumos]);

@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\InsumoController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\EmpleadoController;
 use App\Http\Controllers\Api\VentaController;
+use App\Http\Controllers\Api\AlmacenController;
+use App\Http\Controllers\Api\AlertasController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -29,4 +31,9 @@ Route::post('buscar-user', [UserController::class,'buscarUsuario']);
 Route::post(uri: '/crear-venta', action: [VentaController::class, 'crearVenta']);
 Route::get(uri: '/obtener-pedidos', action: [VentaController::class, 'obtenerPedidos']);
 Route::post(uri: '/actualizar-estado-pedido/{id}', action: [VentaController::class, 'actualizarEstadoPedido']);
-Route::post('get-pizzas-reporte', [VentaController::class,'pedidosReporte']);
+Route::post('/get-pizzas-reporte', [VentaController::class,'pedidosReporte']);
+Route::post('/registrar-compra',[AlmacenController::class,'registrarCompra']);
+
+Route::post('/crear-alerta',[AlertasController::class, 'guardarAlerta']);
+Route::get('/get-alertas',[AlertasController::class, 'getAlertas']);
+Route::post('/marcar-alerta',[AlertasController::class, 'marcarAlertas']);

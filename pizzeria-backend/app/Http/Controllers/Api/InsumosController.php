@@ -9,12 +9,23 @@ use Illuminate\Support\Facades\DB;
 
 class InsumosController extends Controller
 {
-    //
-    function getInsumos()
-    {
-        $insumos = DB::table('insumos')
-            ->get();
+    public function getReporteCompras(Request $request)
+{
+    $reporte = DB::table('almacen')
+        ->join('insumos', 'almacen.id_insumo', '=', 'insumos.id_insumo')
+        ->join('proveedor', 'almacen.id_proveedor', '=', 'proveedor.id_proveedor')
+        ->select(
+            'almacen.id_almacen as id',
+            'insumos.nombre as producto',   
+            'proveedor.nombre as proveedor', 
+            'almacen.cantidad_comprada as cantidad',
+            'almacen.costo as precio_unitario', 
+            'insumos.unidad_de_medida as unidad',
+            'almacen.fecha_de_compra'
+        )
+        ->orderBy('almacen.fecha_de_compra', 'desc')
+        ->get();
 
-        return response()->json(['insumos' => $insumos]);
-    }
+    return response()->json($reporte);
+}
 }

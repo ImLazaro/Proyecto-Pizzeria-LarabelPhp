@@ -94,16 +94,79 @@ return response()->json(['message' => 'Pizza updated successfully', 'pizza' => $
 }
 
 public function getProductos()
-{
-    $productos = DB::table('producto')
-    ->select('id_producto', 'nombre', 'precio', 'estado', 'tipo')
-    ->where('estado', true)
-    ->get();
+    {
+        
+        $productos = DB::table('producto')
+            ->select('id_producto', 'nombre', 'precio', 'estado', 'tipo')
+            ->where('estado', true)
+            ->get();
 
-    $grouped = $productos->groupBy('tipo')->mapWithKeys(fn($items, $key) => [
-    $key => $items->values()
-]);
+        
+        $productos = $productos->map(function ($producto) {
+            
+            if ($producto->tipo === 'Pizza') {
+                $disponibilidad = $this->verificarDisponibilidadPizza($producto->id_producto);
+                $producto->disponible = $disponibilidad['disponible'];
+                $producto->ingredientes_faltantes = $disponibilidad['faltantes'];
+            } else {
+                
+                $producto->disponible = true;
+                $producto->ingredientes_faltantes = [];
+            }
+            
+            return $producto;
+        });
 
-    return response()->json(['productos' => $grouped]);
-}
+        
+        $grouped = $productos->groupBy('tipo')->mapWithKeys(fn($items, $key) => [
+            $key => $items->values()
+        ]);
+
+        return response()->json($grouped);
+    }
+
+    private function verificarDisponibilidadPizza($id_pizza)
+    {
+        
+        $receta = DB::table('receta')
+            ->join('insumos', 'receta.id_insumo', '=', 'insumos.id_insumo')
+            ->select(
+                'insumos.id_insumo',
+                'insumos.nombre',
+                'insumos.cantidad_en_almacen',
+                'receta.cantidad as cantidad_necesaria'
+            )
+            ->where('receta.id_pizza', $id_pizza)
+            ->get();
+
+        
+        if ($receta->isEmpty()) {
+            return [
+                'disponible' => false,
+                'faltantes' => ['Sin receta definida']
+            ];
+        }
+
+        $disponible = true;
+        $faltantes = [];
+
+        
+        foreach ($receta as $ingrediente) {
+            
+            if ($ingrediente->cantidad_en_almacen < $ingrediente->cantidad_necesaria) {
+                $disponible = false;
+                $faltantes[] = [
+                    'nombre' => $ingrediente->nombre,
+                    'necesaria' => $ingrediente->cantidad_necesaria,
+                    'disponible' => $ingrediente->cantidad_en_almacen,
+                    'faltante' => $ingrediente->cantidad_necesaria - $ingrediente->cantidad_en_almacen
+                ];
+            }
+        }
+
+        return [
+            'disponible' => $disponible,
+            'faltantes' => $faltantes
+        ];
+    }
 }

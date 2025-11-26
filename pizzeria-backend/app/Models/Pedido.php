@@ -15,7 +15,7 @@ class Pedido extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'estado', 'id_caja', 'total', 'pagado', 'entregado', 'fecha', 'turno', 'id_producto', 'tipo_venta'
+        'estado', 'id_caja', 'total', 'pagado', 'entregado', 'fecha', 'turno', 'id_producto', 'tipo_venta','metodo_pago'
     ];
     public function detalle()
     {

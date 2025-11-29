@@ -319,4 +319,23 @@ public function pedidosReporte(Request $request)
     ]);
 }
 
+   public function getVentas(Request $request)
+{
+    $fechaInicial = $request->fecha_inicial;
+    $fechaFinal   = $request->fecha_final;
+
+    if (!$fechaInicial || !$fechaFinal) {
+        return response()->json([
+            'message' => 'Debes enviar fecha_inicial y fecha_final'
+        ], 400);
+    }
+
+    $ventas = Pedido::with('detalle.producto')
+        ->whereBetween('fecha', [$fechaInicial . " 00:00:00", $fechaFinal . " 23:59:59"])
+        ->orderBy('fecha', 'desc')
+        ->get();
+
+    return response()->json($ventas);
+}
+
 }

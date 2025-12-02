@@ -39,3 +39,4 @@ Route::post('/registrar-compra',[AlmacenController::class,'registrarCompra']);
 Route::post('/crear-alerta',[AlertasController::class, 'guardarAlerta']);
 Route::get('/get-alertas',[AlertasController::class, 'getAlertas']);
 Route::post('/marcar-alerta',[AlertasController::class, 'marcarAlertas']);
+Route::get('reporte-compras-dia', [App\Http\Controllers\Api\InsumosController::class, 'getReporteCompras']);

@@ -19,6 +19,5 @@ class Almacen extends Model
         'cantidad_comprada',
         'costo',
         'id_insumo',
-        'id_proveedor'
     ];
 }

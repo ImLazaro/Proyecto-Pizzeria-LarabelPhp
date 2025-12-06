@@ -13,11 +13,9 @@ class InsumosController extends Controller
 {
     $reporte = DB::table('almacen')
         ->join('insumos', 'almacen.id_insumo', '=', 'insumos.id_insumo')
-        ->join('proveedor', 'almacen.id_proveedor', '=', 'proveedor.id_proveedor')
         ->select(
             'almacen.id_almacen as id',
             'insumos.nombre as producto',   
-            'proveedor.nombre as proveedor', 
             'almacen.cantidad_comprada as cantidad',
             'almacen.costo as precio_unitario', 
             'insumos.unidad_de_medida as unidad',

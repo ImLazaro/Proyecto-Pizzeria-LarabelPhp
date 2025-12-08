@@ -21,19 +21,21 @@ Route::get('get-menu', [ProductoController::class, 'getProductos']);
 Route::get('get-cajas', [CajaController::class, 'getCajas']);
 Route::get('get-ultimo-turno', [turnoController::class, 'getUltimoTurno']);
 Route::post('crear-turno', [turnoController::class, 'crearTurno']);
+Route::post('terminar-turno', [turnoController::class, 'terminarTurno']);
 Route::get('get-insumos', [InsumoController::class, 'getInsumos']);
 Route::post('update-insumo', [InsumoController::class, 'updateInsumo']);
 Route::get('get-users', [EmpleadoController::class, 'getUsers']);
 Route::post('update-empleado', [EmpleadoController::class, 'updateEmpleado']);
 Route::post('save-user', [UserController::class, 'saveUser']);
 Route::post('buscar-user', [UserController::class,'buscarUsuario']);
-
+Route::post('get-nombre-usuario', [UserController::class, 'getNombreUsuario']);
+Route::post('crear-corte-caja', [App\Http\Controllers\Api\CortedeCajaController::class, 'crearCorteCaja']);
 Route::post(uri: '/crear-venta', action: [VentaController::class, 'crearVenta']);
 Route::get(uri: '/obtener-pedidos', action: [VentaController::class, 'obtenerPedidos']);
 Route::post(uri: '/actualizar-estado-pedido/{id}', action: [VentaController::class, 'actualizarEstadoPedido']);
 Route::post('/get-pizzas-reporte', [VentaController::class,'pedidosReporte']);
 Route::post('/get-ventas',[VentaController::class,'getVentas']);
-
+Route::post('get-ventas-turno', [VentaController::class, 'getVentasXTurno']);
 Route::post('/registrar-compra',[AlmacenController::class,'registrarCompra']);
 
 Route::post('/crear-alerta',[AlertasController::class, 'guardarAlerta']);

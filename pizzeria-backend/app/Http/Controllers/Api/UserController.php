@@ -40,4 +40,15 @@ class UserController extends Controller
 
         return response()->json([$usuario]);
     }
+
+    function getNombreUsuario(Request $request)
+    {
+        $usuario = DB::table('users as u')
+            ->select('e.nombre', 'e.apellido_materno', 'e.apellido_paterno')
+            ->join('empleado as e', 'u.id_empleado', '=', 'e.id_empleado')
+            ->where('u.id', $request->id_user)
+            ->first();
+
+        return response()->json(['nombre_usuario' => $usuario]);
+    }
 }

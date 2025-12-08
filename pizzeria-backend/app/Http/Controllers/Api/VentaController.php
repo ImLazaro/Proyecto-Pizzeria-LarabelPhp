@@ -338,4 +338,18 @@ public function pedidosReporte(Request $request)
     return response()->json($ventas);
 }
 
+    public function getVentasXTurno(Request $request){
+    $id_turno = $request->id_turno;
+    $ventas = DB::table('pedido')
+    ->select('metodo_pago', DB::raw('SUM(total) as total_por_metodo'))
+    ->where('turno', $id_turno)
+    ->where('pagado', true)
+    ->whereIn('metodo_pago', ['efectivo', 'tarjeta', 'transferencia'])
+    ->groupBy('metodo_pago')
+    ->get();
+
+    return response()->json($ventas);
+
+    }
+
 }

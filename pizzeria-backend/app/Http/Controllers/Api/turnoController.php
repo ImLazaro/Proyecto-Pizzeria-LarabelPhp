@@ -29,7 +29,16 @@ class turnoController extends Controller
         $turno->hora_de_entrada= $request->hora_inicio;
         $turno->id_user = $request->id_user;
         $turno->id_caja = $request->caja;
-        $turno->fondo_inicial = $request->fondoInicial;
+        $turno->fondo_inicial = $request->fondoIncial;
+        $turno->save();
+    }
+
+    function terminarTurno(Request $request)
+    {
+        //
+        $turno = Turno::find($request->id);
+        $turno->hora_de_salida= $request->hora_de_salida;
+        
         $turno->save();
     }
 }
